@@ -10,7 +10,7 @@ apart:-
 
 % initial menu
 initial_menu:- 
-    write('Choose an option:\n')
+    write('Choose an option:\n'),
     write('1. Human vs. Human\n'),
     write('2. Human vs. Machine\n'),
     write('3. Machine vs. Machine\n').
@@ -29,7 +29,8 @@ option(3):-
     write('Machine vs. Machine\n'),
     asserta((name_of(player1, 'Machine1'))),
     asserta((name_of(player2, 'Machine2'))), !,
-    set_difficulty(player1).
+    set_difficulty(player1),
+    set_difficulty(player2).
 
 
 % get and set name of player
@@ -80,11 +81,19 @@ choose_player(Player):-
     nth1(Index, [player1, player2], Player).
 
 
+% Game mode choice
+set_mode :-
+    initial_menu,
+    get_option(1, 3, 'Mode', Option), !,
+    option(Option).
+
+
 % initialize GameState with board
-settings([Board, Player, [], 0]).-
+settings([Board, Player, [], 0]):-
     apart,
     set_mode,
     choose_player(Player),
-    init_state(Size, Board),
+    init_state(Size, Board).
+
 
 play:- settings(GameState).
